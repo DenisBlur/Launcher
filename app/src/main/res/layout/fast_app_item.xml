@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    app:cardBackgroundColor="#191919"
+    app:strokeColor="#252525"
+    app:cardCornerRadius="60dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/appIconImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        app:riv_corner_radius="48dp" />
+
+</com.google.android.material.card.MaterialCardView>

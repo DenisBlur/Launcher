@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/musicPlayer"
+    android:layout_width="400dp"
+    android:layout_height="204dp"
+    android:animateLayoutChanges="true"
+    app:cardBackgroundColor="#191919"
+    app:cardCornerRadius="16dp"
+    app:strokeColor="#494949"
+    app:strokeWidth="1dp">
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test"
+        android:visibility="gone"
+        app:riv_corner_radius="8dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvBackdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#CC000000"
+        app:cardCornerRadius="16dp"
+        app:strokeColor="#494949"
+        app:strokeWidth="1dp" />
+
+    <include layout="@layout/player_content" />
+
+    <include layout="@layout/player_list" />
+
+</com.google.android.material.card.MaterialCardView>
