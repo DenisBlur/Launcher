@@ -7,13 +7,18 @@
     android:animateLayoutChanges="true"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/mcvGesture"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
-        android:elevation="2dp"
         android:text="14:06"
         android:textColor="#000000"
         android:textSize="64sp"
@@ -26,19 +31,10 @@
         android:layout_below="@+id/tvTime"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:elevation="2dp"
         android:text="12.12.2022"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mcvGesture"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="-8dp"
-        app:cardBackgroundColor="#FFFFFF" />
 
     <include
         layout="@layout/media_player"

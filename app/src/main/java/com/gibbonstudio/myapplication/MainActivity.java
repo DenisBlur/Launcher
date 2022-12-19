@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,8 +23,10 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,23 +111,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("ClickableViewAccessibility")
     private void initGestureDetector() {
-        MaterialCardView mcvGesture = findViewById(R.id.mcvGesture);
+        ImageView mcvGesture = findViewById(R.id.mcvGesture);
         mDetector = new GestureDetector(this, new PositionGestureDetector());
-        mcvGesture.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.i("RAW_X", String.valueOf(motionEvent.getRawX()));
-                return mDetector.onTouchEvent(motionEvent);
-            }
+        mcvGesture.setOnTouchListener((view, motionEvent) -> {
+            Log.i("RAW_X", String.valueOf(motionEvent.getRawX()));
+            return mDetector.onTouchEvent(motionEvent);
         });
     }
 
-    private static class PositionGestureDetector extends GestureDetector.SimpleOnGestureListener {
+    private class PositionGestureDetector extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            return super.onDoubleTap(e);
 
+            MaterialCardView musicPlayer = findViewById(R.id.musicPlayer);
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels;
+
+            if (e.getRawX() > (width / 2)) {
+                musicPlayer.setX(width - ScreenUtils.convertDpToPx(getApplicationContext(), 416));
+            } else {
+                musicPlayer.setX(ScreenUtils.convertDpToPx(getApplicationContext(), 16));
+            }
+            return super.onDoubleTap(e);
         }
     }
 
