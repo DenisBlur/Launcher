@@ -3,7 +3,6 @@ package com.gibbonstudio.myapplication;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.gibbonstudio.myapplication.ObjectVariables.NOTIFICATION_LIST;
 import static com.gibbonstudio.myapplication.ObjectVariables.NOTIFICATION_POST;
-import static com.gibbonstudio.myapplication.ObjectVariables.SHOW_HIDE_APP_DRAWER;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -18,9 +17,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +27,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import com.gibbonstudio.myapplication.Overlays.Overlay;
 import com.gibbonstudio.myapplication.Overlays.OverlayStarter;
-import com.gibbonstudio.myapplication.Views.Apps.AllAppsDrawer;
 import com.gibbonstudio.myapplication.Views.MediaControl.MediaPlayerView;
-import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     public static ObjectVariables objectVariables;
     public static Intent serviceStarter;
@@ -46,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private GestureDetector mDetector;
     private MediaPlayerView mediaPlayerView;
-
-    private AllAppsDrawer adDrawer;
 
     //Receivers
     ChangeTimeAndDate changeTimeAndDate = new ChangeTimeAndDate();
@@ -113,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            LinearLayout llAudioControl = findViewById(R.id.llAudioControl);
+            RelativeLayout llAudioControl = findViewById(R.id.llAudioControl);
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -201,10 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView() {
         mediaPlayerView = findViewById(R.id.mpvMain);
-        MaterialCardView mcvStart = findViewById(R.id.mcvStart);
-        mcvStart.setOnClickListener(this);
-
-        adDrawer = findViewById(R.id.adDrawer);
     }
 
     @Override
@@ -214,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             stopService(serviceOverlay);
         }
         stopService(serviceStarter);
-        mediaPlayerView.bindToTrack(this);
+        mediaPlayerView.bindToTrack();
     }
 
     @Override
@@ -223,22 +214,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(serviceStarter);
     }
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.mcvStart) {
-            adDrawer.showHideAppDrawer();
-        }
-    }
 
     class NotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 if (intent.getStringExtra("player").equals("YANDEX_POST")) {
-                    mediaPlayerView.bindToTrack(context);
+                    mediaPlayerView.bindToTrack();
                 } else {
-                    mediaPlayerView.showMediaContent(context, false);
+                    mediaPlayerView.showMediaContent(false);
 
                 }
             }

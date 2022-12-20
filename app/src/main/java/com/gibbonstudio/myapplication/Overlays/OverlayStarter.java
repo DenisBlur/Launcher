@@ -3,6 +3,7 @@ package com.gibbonstudio.myapplication.Overlays;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import static com.gibbonstudio.myapplication.MainActivity.serviceOverlay;
+import static com.gibbonstudio.myapplication.ObjectVariables.posHeightAppBar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,7 +18,9 @@ import android.os.IBinder;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
@@ -35,6 +38,8 @@ public class OverlayStarter extends Service {
     private RelativeLayout topView;
     private WindowManager windowManager;
     private View edge;
+
+    int mathHeight = 0;
 
     @Nullable
     @Override
@@ -61,7 +66,7 @@ public class OverlayStarter extends Service {
         if (edge != null) windowManager.removeView(edge);
     }
 
-    @SuppressLint({"RtlHardcoded", "InflateParams"})
+    @SuppressLint({"RtlHardcoded", "InflateParams", "ClickableViewAccessibility"})
     private void initViews() {
 
         Context context = this;
@@ -69,13 +74,13 @@ public class OverlayStarter extends Service {
 
         topView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.overlay_starter, null);
         topParams = new WindowManager.LayoutParams(
-                ScreenUtils.convertDpToPx(context, 48),
-                ScreenUtils.convertDpToPx(context, 48),
+                ScreenUtils.width,
+                ScreenUtils.convertDpToPx(context, 16),
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
-        topParams.x = ScreenUtils.convertDpToPx(context, 48);
-        topParams.y = ScreenUtils.convertDpToPx(context, 48);
+        topParams.x = 0;
+        topParams.y = 0;
         topParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
         windowManager.addView(topView, topParams);
 
@@ -83,23 +88,47 @@ public class OverlayStarter extends Service {
 
         ValueAnimator buttonAnimation = ValueAnimator.ofFloat(0, 1);
         buttonAnimation.addUpdateListener(valueAnimator -> {
-            mcvStartOverlay.setScaleX((Float) valueAnimator.getAnimatedValue());
             mcvStartOverlay.setScaleY((Float) valueAnimator.getAnimatedValue());
         });
         buttonAnimation.setInterpolator(new FastOutSlowInInterpolator());
         buttonAnimation.setDuration(650);
         buttonAnimation.start();
+        mcvStartOverlay.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    mathHeight = (int) ((ScreenUtils.height - event.getRawY()));
+                    if (mathHeight >= ScreenUtils.convertDpToPx(context, posHeightAppBar)) {
+                        mcvStartOverlay.setOnTouchListener(null);
+                        buttonAnimation.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                stopSelf();
+                                startService(serviceOverlay);
+                            }
+                        });
+                        buttonAnimation.reverse();
+                        return true;
+                    } else {
+                        topParams.height = (int) Math.max(mathHeight, ScreenUtils.convertDpToPx(context, 16));
+                        windowManager.updateViewLayout(topView, topParams);
+                    }
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    if (mathHeight < ScreenUtils.convertDpToPx(context, posHeightAppBar)) {
+                        topParams.height = ScreenUtils.convertDpToPx(context, 16);
+                        windowManager.updateViewLayout(topView, topParams);
+                        return true;
+                    }
+                    return true;
+            }
+            return true;
+        });
         mcvStartOverlay.setOnClickListener(
                 view -> {
-                    buttonAnimation.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            stopSelf();
-                            startService(serviceOverlay);
-                        }
-                    });
-                    buttonAnimation.reverse();
+
                 }
         );
     }

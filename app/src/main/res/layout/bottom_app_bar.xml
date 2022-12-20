@@ -5,6 +5,7 @@
     android:id="@+id/mcvAppBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:elevation="16dp"
     app:cardBackgroundColor="#F2000000"
     app:cardCornerRadius="0dp"
@@ -16,25 +17,55 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mcvStart"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:clickable="true"
-            android:onClick="onClick"
-            app:cardBackgroundColor="#191919"
-            app:cardCornerRadius="29dp"
-            app:strokeColor="#494949"
-            app:strokeWidth="1dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <ImageView
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcvCloseOverlay"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/apps"
-                tools:ignore="ContentDescription" />
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:visibility="gone"
+                app:cardBackgroundColor="#191919"
+                app:cardCornerRadius="29dp"
+                app:strokeColor="#494949"
+                app:strokeWidth="1dp">
 
-        </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+
+                    android:layout_gravity="center"
+                    android:src="@drawable/close"
+                    tools:ignore="ContentDescription" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcvStart"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:clickable="true"
+                android:onClick="onClick"
+                app:cardBackgroundColor="#191919"
+                app:cardCornerRadius="29dp"
+                app:strokeColor="#494949"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/apps"
+                    tools:ignore="ContentDescription" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFastApps"
@@ -43,6 +74,7 @@
             android:layout_centerInParent="true"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
             tools:listitem="@layout/fast_app_item" />
 
     </RelativeLayout>

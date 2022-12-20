@@ -26,6 +26,7 @@ import com.gibbonstudio.myapplication.Adapters.AppsAdapter;
 import com.gibbonstudio.myapplication.MainActivity;
 import com.gibbonstudio.myapplication.Models.AppItem;
 import com.gibbonstudio.myapplication.R;
+import com.gibbonstudio.myapplication.Views.MediaControl.MediaPlayerView;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class AllAppsDrawer extends FrameLayout {
     Context mContext;
 
     MaterialCardView mcvAppDrawer;
+    MaterialCardView mcvStart;
+
     RecyclerView rvAllApps;
     RecyclerView rvFastApps;
 
@@ -74,6 +77,7 @@ public class AllAppsDrawer extends FrameLayout {
 
         //Init Views
         mcvAppDrawer = findViewById(R.id.mcvAppDrawer);
+        mcvStart = findViewById(R.id.mcvStart);
         rvAllApps = findViewById(R.id.rvAllApps);
         rvFastApps = findViewById(R.id.rvFastApps);
 
@@ -98,6 +102,10 @@ public class AllAppsDrawer extends FrameLayout {
 
         //Set App Drawer Visibility
         mcvAppDrawer.setVisibility(View.GONE);
+
+        mcvStart.setOnClickListener(v -> {
+            showHideAppDrawer();
+        });
 
         initReceiver();
     }

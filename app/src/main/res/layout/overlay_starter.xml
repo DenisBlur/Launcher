@@ -11,17 +11,18 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcvStartOverlay"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:cardBackgroundColor="#191919"
-        app:cardCornerRadius="29dp"
+        app:cardCornerRadius="0dp"
         app:strokeColor="#494949">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:src="@drawable/open_in_full" />
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/drag_shape" />
 
     </com.google.android.material.card.MaterialCardView>
 

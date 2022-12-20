@@ -22,6 +22,8 @@ import com.google.android.material.card.MaterialCardView;
 
 public class MediaPlayerView extends FrameLayout {
 
+    Context mContext;
+
     TextView artistText;
     TextView trackText;
 
@@ -60,6 +62,8 @@ public class MediaPlayerView extends FrameLayout {
 
         inflate(context, R.layout.media_player, this);
 
+        mContext = context;
+
         artistText = findViewById(R.id.artistText);
         trackText = findViewById(R.id.trackText);
         trackImage = findViewById(R.id.trackImage);
@@ -76,7 +80,7 @@ public class MediaPlayerView extends FrameLayout {
 
     }
 
-    public void bindToTrack(Context context) {
+    public void bindToTrack() {
         if (objectVariables.getPlayerSbn() != null) {
 
             artistText.setText(objectVariables.getPlayerSbn().getNotification().extras.getString("android.text"));
@@ -120,18 +124,18 @@ public class MediaPlayerView extends FrameLayout {
             imageNotificationPlay.setImageResource(objectVariables.getPlayerSbn().getNotification().actions[2].title.equals("Play") ? R.drawable.play_arrow : R.drawable.stop);
 
             trackText.setSelected(true);
-            showMediaContent(context, true);
+            showMediaContent(true);
         }
     }
 
-    public void showMediaContent(Context context, boolean show) {
+    public void showMediaContent(boolean show) {
         if (show && playerContent.getVisibility() == View.GONE) {
             playerContent.setVisibility(View.VISIBLE);
             imgBackground.setVisibility(View.VISIBLE);
             mcvBackdrop.setVisibility(View.VISIBLE);
             playerList.setVisibility(View.GONE);
 
-            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(-500, ScreenUtils.convertDpToPx(context, 16));
+            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(-500, ScreenUtils.convertDpToPx(mContext, 16));
             playerContentAnimation.addUpdateListener(valueAnimator -> {
                 playerContent.setX((Float) valueAnimator.getAnimatedValue());
 
@@ -140,7 +144,7 @@ public class MediaPlayerView extends FrameLayout {
             playerContentAnimation.setDuration(350);
             playerContentAnimation.start();
 
-            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(context, 16), 500);
+            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(mContext, 16), 500);
             playerListAnimation.addUpdateListener(valueAnimator -> {
                 playerList.setX((Float) valueAnimator.getAnimatedValue());
             });
@@ -151,7 +155,7 @@ public class MediaPlayerView extends FrameLayout {
             mcvBackdrop.setVisibility(View.GONE);
             playerList.setVisibility(View.VISIBLE);
 
-            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(context, 16), 500);
+            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(mContext, 16), 500);
             playerContentAnimation.addUpdateListener(valueAnimator -> {
                 playerContent.setX((Float) valueAnimator.getAnimatedValue());
 
@@ -160,7 +164,7 @@ public class MediaPlayerView extends FrameLayout {
             playerContentAnimation.setDuration(350);
             playerContentAnimation.start();
 
-            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(500, ScreenUtils.convertDpToPx(context, 16));
+            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(500, ScreenUtils.convertDpToPx(mContext, 16));
             playerListAnimation.addUpdateListener(valueAnimator -> {
                 playerList.setX((Float) valueAnimator.getAnimatedValue());
             });
