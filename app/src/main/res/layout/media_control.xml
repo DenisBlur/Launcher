@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnVolumeDown"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:clickable="true"
+            app:cardBackgroundColor="#191919"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#252525">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/volume_down" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/pbVolumeProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="56dp"
+            android:progress="50"
+            android:progressDrawable="@drawable/gprogress" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnVolumeUp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            app:cardBackgroundColor="#191919"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#252525">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/volume_up" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

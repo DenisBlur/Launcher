@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +40,7 @@ import com.gibbonstudio.myapplication.Adapters.AppsAdapter;
 import com.gibbonstudio.myapplication.Models.AppItem;
 import com.gibbonstudio.myapplication.Overlays.Overlay;
 import com.gibbonstudio.myapplication.Overlays.OverlayStarter;
+import com.gibbonstudio.myapplication.Views.MediaPlayerView;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static Intent serviceOverlay;
 
     private GestureDetector mDetector;
+    private MediaPlayerView mediaPlayerView;
 
     //Receivers
     ChangeTimeAndDate changeTimeAndDate = new ChangeTimeAndDate();
@@ -124,16 +127,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            MaterialCardView musicPlayer = findViewById(R.id.musicPlayer);
+            LinearLayout llAudioControl = findViewById(R.id.llAudioControl);
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             int width = displayMetrics.widthPixels;
 
+            ValueAnimator audioControlAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(getApplicationContext(), 16), width - ScreenUtils.convertDpToPx(getApplicationContext(), 416));
+            audioControlAnimation.addUpdateListener(valueAnimator -> llAudioControl.setX((Float) valueAnimator.getAnimatedValue()));
+            audioControlAnimation.setInterpolator(new FastOutSlowInInterpolator());
+            audioControlAnimation.setDuration(650);
+
             if (e.getRawX() > (width / 2)) {
-                musicPlayer.setX(width - ScreenUtils.convertDpToPx(getApplicationContext(), 416));
+                audioControlAnimation.start();
             } else {
-                musicPlayer.setX(ScreenUtils.convertDpToPx(getApplicationContext(), 16));
+                audioControlAnimation.reverse();
             }
             return super.onDoubleTap(e);
         }
@@ -231,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initializeView() {
+        mediaPlayerView = findViewById(R.id.mpvMain);
         MaterialCardView mcvStart = findViewById(R.id.mcvStart);
         appDrawer = findViewById(R.id.appDrawer);
         mcvStart.setOnClickListener(this);
@@ -243,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             stopService(serviceOverlay);
         }
         stopService(serviceStarter);
-        initMediaPlayer();
+        mediaPlayerView.bindToTrack(this);
     }
 
     @Override
@@ -255,31 +264,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnNotificationPrev:
-                try {
-                    objectVariables.getPlayerSbn().getNotification().actions[1].actionIntent.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.btnNotificationPlay:
-                try {
-                    objectVariables.getPlayerSbn().getNotification().actions[2].actionIntent.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.btnNotificationNext:
-                try {
-                    objectVariables.getPlayerSbn().getNotification().actions[3].actionIntent.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.mcvStart:
-                showHideAppDrawer();
-                break;
+        if (view.getId() == R.id.mcvStart) {
+            showHideAppDrawer();
         }
     }
 
@@ -306,109 +292,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    void initMediaContent(boolean show) {
-
-        Log.e("SHOW_HIDE_LOG", "MEDIA_CONTENT");
-
-        LinearLayout playerContent = findViewById(R.id.playerContent);
-        LinearLayout playerList = findViewById(R.id.playerList);
-
-        ImageView imgBackground = findViewById(R.id.imgBackground);
-
-        MaterialCardView mcvBackdrop = findViewById(R.id.mcvBackdrop);
-
-        if (show && playerContent.getVisibility() == View.GONE) {
-            playerContent.setVisibility(View.VISIBLE);
-            imgBackground.setVisibility(View.VISIBLE);
-            mcvBackdrop.setVisibility(View.VISIBLE);
-            playerList.setVisibility(View.GONE);
-
-            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(-500, ScreenUtils.convertDpToPx(this, 16));
-            playerContentAnimation.addUpdateListener(valueAnimator -> {
-                playerContent.setX((Float) valueAnimator.getAnimatedValue());
-
-            });
-            playerContentAnimation.setInterpolator(new FastOutSlowInInterpolator());
-            playerContentAnimation.setDuration(350);
-            playerContentAnimation.start();
-
-            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(this, 16), 500);
-            playerListAnimation.addUpdateListener(valueAnimator -> {
-                playerList.setX((Float) valueAnimator.getAnimatedValue());
-            });
-
-        } else if (!show && playerContent.getVisibility() == View.VISIBLE) {
-            playerContent.setVisibility(View.GONE);
-            imgBackground.setVisibility(View.GONE);
-            mcvBackdrop.setVisibility(View.GONE);
-            playerList.setVisibility(View.VISIBLE);
-
-            ValueAnimator playerContentAnimation = ValueAnimator.ofFloat(ScreenUtils.convertDpToPx(this, 16), 500);
-            playerContentAnimation.addUpdateListener(valueAnimator -> {
-                playerContent.setX((Float) valueAnimator.getAnimatedValue());
-
-            });
-            playerContentAnimation.setInterpolator(new FastOutSlowInInterpolator());
-            playerContentAnimation.setDuration(350);
-            playerContentAnimation.start();
-
-            ValueAnimator playerListAnimation = ValueAnimator.ofFloat(500, ScreenUtils.convertDpToPx(this, 16));
-            playerListAnimation.addUpdateListener(valueAnimator -> {
-                playerList.setX((Float) valueAnimator.getAnimatedValue());
-            });
-            playerListAnimation.setInterpolator(new FastOutSlowInInterpolator());
-            playerListAnimation.setDuration(350);
-            playerListAnimation.start();
-        }
-    }
-
-    private void initMediaPlayer() {
-        if (ObjectVariables.getInstance().getPlayerSbn() != null) {
-
-            TextView artistText = findViewById(R.id.artistText);
-            TextView trackText = findViewById(R.id.trackText);
-
-            ImageView trackImage = findViewById(R.id.trackImage);
-            ImageView imageNotificationPlay = findViewById(R.id.imageNotificationPlay);
-            ImageView imageNotificationPrev = findViewById(R.id.imageNotificationPrev);
-            ImageView imageNotificationNext = findViewById(R.id.imageNotificationNext);
-            ImageView imgBackground = findViewById(R.id.imgBackground);
-
-            MaterialCardView btnNotificationPrev = findViewById(R.id.btnNotificationPrev);
-            MaterialCardView btnNotificationPlay = findViewById(R.id.btnNotificationPlay);
-            MaterialCardView btnNotificationNext = findViewById(R.id.btnNotificationNext);
-
-            artistText.setText(objectVariables.getPlayerSbn().getNotification().extras.getString("android.text"));
-            trackText.setText(objectVariables.getPlayerSbn().getNotification().extras.getString("android.title"));
-            trackImage.setImageIcon(objectVariables.getPlayerSbn().getNotification().getLargeIcon());
-            imgBackground.setImageIcon(objectVariables.getPlayerSbn().getNotification().getLargeIcon());
-
-            btnNotificationPrev.setOnClickListener(this);
-            btnNotificationPlay.setOnClickListener(this);
-            btnNotificationNext.setOnClickListener(this);
-
-            btnNotificationPrev.setEnabled(!objectVariables.getPlayerSbn().getNotification().actions[1].title.equals("PreviousBlocked"));
-            imageNotificationPrev.setImageResource(!objectVariables.getPlayerSbn().getNotification().actions[1].title.equals("PreviousBlocked") ? R.drawable.skip_previous : R.drawable.block);
-            imageNotificationNext.setImageResource(!objectVariables.getPlayerSbn().getNotification().actions[3].title.equals("NextBlocked") ? R.drawable.skip_next : R.drawable.block);
-            imageNotificationPlay.setImageResource(objectVariables.getPlayerSbn().getNotification().actions[2].title.equals("Play") ? R.drawable.play_arrow : R.drawable.stop);
-
-            trackText.setSelected(true);
-
-            initMediaContent(true);
-            thread.interrupt();
-        }
-    }
-
-
     class NotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 if (intent.getStringExtra("player").equals("YANDEX_POST")) {
-                    initMediaPlayer();
+                    mediaPlayerView.bindToTrack(context);
                 } else {
-                    initMediaContent(false);
-                    thread.start();
+                    mediaPlayerView.showMediaContent(context, false);
+
                 }
             }
         }

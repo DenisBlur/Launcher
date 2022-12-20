@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/musicPlayer"
     android:layout_width="400dp"
@@ -36,5 +37,4 @@
     <include layout="@layout/player_content" />
 
     <include layout="@layout/player_list" />
-
 </com.google.android.material.card.MaterialCardView>

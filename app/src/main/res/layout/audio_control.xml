@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
+    android:id="@+id/llAudioControl"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.gibbonstudio.myapplication.Views.MediaControlView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_height="wrap_content" />
+
+    <com.gibbonstudio.myapplication.Views.MediaPlayerView
+        android:id="@+id/mpvMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true" />
+
+</LinearLayout>
