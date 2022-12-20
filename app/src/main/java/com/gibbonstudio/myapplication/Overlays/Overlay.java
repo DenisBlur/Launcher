@@ -262,8 +262,6 @@ public class Overlay extends Service implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        MaterialCardView appDrawer = topView.findViewById(R.id.appDrawer);
-
         switch (view.getId()) {
             case R.id.btnNotificationPrev:
                 try {
@@ -289,22 +287,6 @@ public class Overlay extends Service implements View.OnClickListener {
             case R.id.mcvStart:
                 int height = ScreenUtils.height;
 
-                if (appDrawer.getVisibility() == View.VISIBLE) {
-                    appDrawer.setVisibility(View.GONE);
-                    ValueAnimator appDrawerAnimation = ValueAnimator.ofFloat(0, height);
-                    appDrawerAnimation.addUpdateListener(valueAnimator -> appDrawer.setY((Float) valueAnimator.getAnimatedValue()));
-                    appDrawerAnimation.setInterpolator(new FastOutSlowInInterpolator());
-                    appDrawerAnimation.setDuration(650);
-                    appDrawerAnimation.start();
-
-                } else {
-                    appDrawer.setVisibility(View.VISIBLE);
-                    ValueAnimator appDrawerAnimation = ValueAnimator.ofFloat(height, 0);
-                    appDrawerAnimation.addUpdateListener(valueAnimator -> appDrawer.setY((Float) valueAnimator.getAnimatedValue()));
-                    appDrawerAnimation.setInterpolator(new FastOutSlowInInterpolator());
-                    appDrawerAnimation.setDuration(650);
-                    appDrawerAnimation.start();
-                }
                 break;
         }
 

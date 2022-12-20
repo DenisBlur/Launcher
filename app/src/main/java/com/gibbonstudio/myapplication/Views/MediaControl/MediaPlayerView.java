@@ -1,4 +1,4 @@
-package com.gibbonstudio.myapplication.Views;
+package com.gibbonstudio.myapplication.Views.MediaControl;
 
 import static com.gibbonstudio.myapplication.MainActivity.objectVariables;
 
@@ -83,6 +83,14 @@ public class MediaPlayerView extends FrameLayout {
             trackText.setText(objectVariables.getPlayerSbn().getNotification().extras.getString("android.title"));
             trackImage.setImageIcon(objectVariables.getPlayerSbn().getNotification().getLargeIcon());
             imgBackground.setImageIcon(objectVariables.getPlayerSbn().getNotification().getLargeIcon());
+
+            mcvBackdrop.setOnClickListener(v -> {
+                try {
+                    objectVariables.getPlayerSbn().getNotification().contentIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+            });
 
             btnNotificationPrev.setOnClickListener(view -> {
                 try {

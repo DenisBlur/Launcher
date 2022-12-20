@@ -41,20 +41,15 @@
         layout="@layout/audio_control"
         android:layout_width="400dp"
         android:layout_height="276dp"
-        android:layout_above="@+id/mcvAppBar"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="96dp" />
 
-    <include
-        layout="@layout/apps_drawer"
-        android:visibility="gone" />
-
-    <include
-        layout="@layout/activity_bottom_app_starter"
+    <com.gibbonstudio.myapplication.Views.Apps.AllAppsDrawer
+        android:id="@+id/adDrawer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

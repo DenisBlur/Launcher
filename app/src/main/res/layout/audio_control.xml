@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.gibbonstudio.myapplication.Views.MediaControlView
+    <com.gibbonstudio.myapplication.Views.MediaControl.MediaControlView
         android:layout_width="match_parent"
         android:layout_marginBottom="16dp"
         android:layout_height="wrap_content" />
 
-    <com.gibbonstudio.myapplication.Views.MediaPlayerView
+    <com.gibbonstudio.myapplication.Views.MediaControl.MediaPlayerView
         android:id="@+id/mpvMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

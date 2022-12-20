@@ -1,4 +1,4 @@
-package com.gibbonstudio.myapplication.Views;
+package com.gibbonstudio.myapplication.Views.MediaControl;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
