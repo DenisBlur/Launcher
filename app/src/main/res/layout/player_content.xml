@@ -64,46 +64,46 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
-        <com.google.android.material.card.MaterialCardView
+        <FrameLayout
             android:id="@+id/btnNotificationPrev"
             android:layout_width="112dp"
             android:layout_height="56dp"
-            android:clickable="true"
-            app:cardBackgroundColor="#191919"
-            app:strokeColor="#252525">
+            android:background="@drawable/bg_small_sqrt_btn">
 
             <ImageView
                 android:id="@+id/imageNotificationPrev"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:src="@drawable/skip_previous" />
+                android:src="@drawable/skip_previous"
+                tools:ignore="ContentDescription" />
 
-        </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <FrameLayout
             android:id="@+id/btnNotificationPlay"
             android:layout_width="112dp"
             android:layout_height="56dp"
             android:layout_gravity="center"
-            android:clickable="true"
-            app:cardBackgroundColor="#191919"
-            app:strokeColor="#252525">
+            android:background="@drawable/bg_small_sqrt_btn"
+            android:clickable="true">
 
             <ImageView
                 android:id="@+id/imageNotificationPlay"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:src="@drawable/play_arrow" />
+                android:src="@drawable/play_arrow"
+                tools:ignore="ContentDescription" />
 
-        </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <FrameLayout
             android:id="@+id/btnNotificationNext"
             android:layout_width="112dp"
             android:layout_height="56dp"
             android:layout_gravity="end"
+            android:background="@drawable/bg_small_sqrt_btn"
             android:clickable="true"
             app:cardBackgroundColor="#191919"
             app:strokeColor="#252525">
@@ -113,9 +113,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:src="@drawable/skip_next" />
+                android:src="@drawable/skip_next"
+                tools:ignore="ContentDescription" />
 
-        </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

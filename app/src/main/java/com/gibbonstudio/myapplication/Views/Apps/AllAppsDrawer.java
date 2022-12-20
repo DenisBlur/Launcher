@@ -1,21 +1,21 @@
 package com.gibbonstudio.myapplication.Views.Apps;
 
+import static android.content.Context.WINDOW_SERVICE;
 import static com.gibbonstudio.myapplication.ObjectVariables.SHOW_HIDE_APP_DRAWER;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,25 +23,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gibbonstudio.myapplication.Adapters.AppsAdapter;
-import com.gibbonstudio.myapplication.MainActivity;
 import com.gibbonstudio.myapplication.Models.AppItem;
 import com.gibbonstudio.myapplication.R;
-import com.gibbonstudio.myapplication.Views.MediaControl.MediaPlayerView;
+import com.gibbonstudio.myapplication.ScreenUtils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AllAppsDrawer extends FrameLayout {
 
     Context mContext;
-
-    MaterialCardView mcvAppDrawer;
-    MaterialCardView mcvStart;
+    FrameLayout mcvStart;
 
     RecyclerView rvAllApps;
     RecyclerView rvFastApps;
+
+    WindowManager windowManager;
 
     List<AppItem> appItems = new ArrayList<>();
     List<AppItem> fastAppItems = new ArrayList<>();
@@ -75,9 +73,10 @@ public class AllAppsDrawer extends FrameLayout {
 
         inflate(context, R.layout.all_apps_drawer, this);
 
+        windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+
         //Init Views
-        mcvAppDrawer = findViewById(R.id.mcvAppDrawer);
-        mcvStart = findViewById(R.id.mcvStart);
+        mcvStart = findViewById(R.id.flStart);
         rvAllApps = findViewById(R.id.rvAllApps);
         rvFastApps = findViewById(R.id.rvFastApps);
 
@@ -101,13 +100,14 @@ public class AllAppsDrawer extends FrameLayout {
         rvFastApps.setAdapter(new AppsAdapter(context, fastAppItems, true));
 
         //Set App Drawer Visibility
-        mcvAppDrawer.setVisibility(View.GONE);
+        rvAllApps.setVisibility(View.GONE);
 
         mcvStart.setOnClickListener(v -> {
             showHideAppDrawer();
         });
 
         initReceiver();
+        initScreenUtils();
     }
 
     private void initReceiver() {
@@ -127,17 +127,15 @@ public class AllAppsDrawer extends FrameLayout {
 
     //Animation Show Hide AppDrawer
     public void showHideAppDrawer() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
+        int height = ScreenUtils.height;
 
         ValueAnimator appDrawerPosAnimation = ValueAnimator.ofFloat(0, height);
-        appDrawerPosAnimation.addUpdateListener(valueAnimator -> mcvAppDrawer.setY((Float) valueAnimator.getAnimatedValue()));
+        appDrawerPosAnimation.addUpdateListener(valueAnimator -> rvAllApps.setY((Float) valueAnimator.getAnimatedValue()));
         appDrawerPosAnimation.setInterpolator(new AccelerateInterpolator(1.5F));
         appDrawerPosAnimation.setDuration(350);
 
         ValueAnimator appDrawerAlphaAnimation = ValueAnimator.ofFloat(1, 0);
-        appDrawerAlphaAnimation.addUpdateListener(valueAnimator -> mcvAppDrawer.setAlpha((Float) valueAnimator.getAnimatedValue()));
+        appDrawerAlphaAnimation.addUpdateListener(valueAnimator -> rvAllApps.setAlpha((Float) valueAnimator.getAnimatedValue()));
         appDrawerAlphaAnimation.setInterpolator(new AccelerateInterpolator(1.5F));
         appDrawerAlphaAnimation.setDuration(350);
 
@@ -146,11 +144,22 @@ public class AllAppsDrawer extends FrameLayout {
             appDrawerAlphaAnimation.start();
             isShow = false;
         } else {
-            mcvAppDrawer.setVisibility(View.VISIBLE);
+            rvAllApps.setVisibility(View.VISIBLE);
             appDrawerPosAnimation.reverse();
             appDrawerAlphaAnimation.reverse();
             isShow = true;
         }
+    }
+
+    private void initScreenUtils() {
+        final Display display = windowManager.getDefaultDisplay();
+        int statusBarHeight = 0;
+        @SuppressLint({"InternalInsetResource", "DiscouragedApi"}) int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+        ScreenUtils.width = display.getWidth();
+        ScreenUtils.height = display.getHeight() - statusBarHeight;
     }
 
     class AppDrawerReceiver extends BroadcastReceiver {

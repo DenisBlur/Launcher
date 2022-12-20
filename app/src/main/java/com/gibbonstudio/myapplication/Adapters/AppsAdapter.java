@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,34 +51,18 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull AppsAdapter.ViewHolder holder, int position) {
 
+
+        FrameLayout flAppCard = holder.itemView.findViewById(R.id.flAppCard);
+        RoundedImageView appIconImage = holder.itemView.findViewById(R.id.appIconImage);
+
         AppItem item = appList.get(position);
         if (smallIcon) {
-            holder.appIconImage.setImageDrawable(item.getIcon());
-            holder.mcvAppCard.setOnClickListener(
-                    view -> {
-                        Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(String.valueOf(item.getPackageName()));
-                        if (launchIntent != null) {
-                            mContext.startActivity(launchIntent);
-                            mContext.sendBroadcast(new Intent(SHOW_HIDE_APP_DRAWER));
-                        }
-                    }
-            );
+            appIconImage.setImageDrawable(item.getIcon());
         } else {
-
             final TextView appTitle = holder.itemView.findViewById(R.id.appTitle);
-
-            holder.appIconImage.setImageDrawable(item.getIcon());
+            appIconImage.setImageDrawable(item.getIcon());
             appTitle.setText(item.getName());
-            holder.mcvAppCard.setOnClickListener(
-                    view -> {
-                        Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(String.valueOf(item.getPackageName()));
-                        if (launchIntent != null) {
-                            mContext.startActivity(launchIntent);
-                            mContext.sendBroadcast(new Intent(SHOW_HIDE_APP_DRAWER));
-                        }
-                    }
-            );
-            holder.mcvAppCard.setOnLongClickListener(v -> {
+            flAppCard.setOnLongClickListener(v -> {
                 Intent intent = new Intent(SHOW_HIDE_APP_DRAWER);
                 intent.putExtra("add_fast_app", position);
                 mContext.sendBroadcast(intent);
@@ -85,6 +70,16 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
                 return false;
             });
         }
+
+        flAppCard.setOnClickListener(
+                view -> {
+                    Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(String.valueOf(item.getPackageName()));
+                    if (launchIntent != null) {
+                        mContext.startActivity(launchIntent);
+                        mContext.sendBroadcast(new Intent(SHOW_HIDE_APP_DRAWER));
+                    }
+                }
+        );
     }
 
     @Override
@@ -93,14 +88,8 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        final RoundedImageView appIconImage;
-        final CardView mcvAppCard;
-
         ViewHolder(View view) {
             super(view);
-            appIconImage = view.findViewById(R.id.appIconImage);
-            mcvAppCard = view.findViewById(R.id.mcvAppCard);
         }
     }
 

@@ -33,9 +33,9 @@ public class MediaPlayerView extends FrameLayout {
     ImageView imageNotificationNext;
     ImageView imgBackground;
 
-    MaterialCardView btnNotificationPrev;
-    MaterialCardView btnNotificationPlay;
-    MaterialCardView btnNotificationNext;
+    FrameLayout btnNotificationPrev;
+    FrameLayout btnNotificationPlay;
+    FrameLayout btnNotificationNext;
     MaterialCardView mcvBackdrop;
 
     LinearLayout playerContent;

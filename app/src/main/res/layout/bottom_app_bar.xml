@@ -21,19 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcvCloseOverlay"
+            <FrameLayout
+                android:id="@+id/flCloseOverlay"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_round_btn"
                 android:clickable="true"
-                android:onClick="onClick"
-                android:visibility="gone"
-                app:cardBackgroundColor="#191919"
-                app:cardCornerRadius="29dp"
-                app:strokeColor="#494949"
-                app:strokeWidth="1dp">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="18dp"
@@ -43,18 +39,14 @@
                     android:src="@drawable/close"
                     tools:ignore="ContentDescription" />
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcvStart"
+            <FrameLayout
+                android:id="@+id/flStart"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:clickable="true"
-                android:onClick="onClick"
-                app:cardBackgroundColor="#191919"
-                app:cardCornerRadius="29dp"
-                app:strokeColor="#494949"
-                app:strokeWidth="1dp">
+                android:background="@drawable/bg_round_btn"
+                android:clickable="true">
 
                 <ImageView
                     android:layout_width="32dp"
@@ -63,7 +55,7 @@
                     android:src="@drawable/apps"
                     tools:ignore="ContentDescription" />
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
         </LinearLayout>
 

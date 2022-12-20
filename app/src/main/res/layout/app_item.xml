@@ -5,15 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mcvAppCard"
+    <FrameLayout
+        android:id="@+id/flAppCard"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:clickable="true"
-        app:cardBackgroundColor="#F2F2F2"
-        app:cardCornerRadius="32dp"
-        app:strokeColor="#DADADA">
+        android:background="@drawable/bg_app_item"
+        android:clickable="true">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/appIconImage"
@@ -23,7 +21,7 @@
             android:layout_margin="8dp"
             app:riv_corner_radius="24dp" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/appTitle"

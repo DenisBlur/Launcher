@@ -18,8 +18,8 @@ import com.google.android.material.card.MaterialCardView;
 
 public class MediaControlView extends FrameLayout {
 
-    MaterialCardView btnVolumeDown;
-    MaterialCardView btnVolumeUp;
+    FrameLayout btnVolumeDown;
+    FrameLayout btnVolumeUp;
     ProgressBar pbVolumeProgress;
     AudioManager audioManager;
 

@@ -1,11 +1,9 @@
 package com.gibbonstudio.myapplication.Overlays;
 
 import static com.gibbonstudio.myapplication.MainActivity.objectVariables;
-import static com.gibbonstudio.myapplication.MainActivity.serviceOverlay;
 import static com.gibbonstudio.myapplication.MainActivity.serviceStarter;
 import static com.gibbonstudio.myapplication.ObjectVariables.NOTIFICATION_LIST;
 import static com.gibbonstudio.myapplication.ObjectVariables.NOTIFICATION_POST;
-import static com.gibbonstudio.myapplication.ObjectVariables.posHeightMediaPlayer;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -24,7 +22,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -42,10 +40,8 @@ public class Overlay extends Service implements View.OnClickListener {
     public static boolean isRunning;
     private RelativeLayout topView;
     private WindowManager windowManager;
-    private View edge;
     private MediaPlayerView mediaPlayerView;
     private AllAppsDrawer adDrawer;
-    private MaterialCardView mcvCloseOverlay;
 
     NotificationReceiver notificationReceiver = new NotificationReceiver();
 
@@ -92,7 +88,6 @@ public class Overlay extends Service implements View.OnClickListener {
         super.onDestroy();
         isRunning = false;
         if (topView != null) windowManager.removeView(topView);
-        if (edge != null) windowManager.removeView(edge);
     }
 
     @SuppressLint({"RtlHardcoded", "InflateParams"})
@@ -113,22 +108,13 @@ public class Overlay extends Service implements View.OnClickListener {
         topParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
         windowManager.addView(topView, topParams);
 
-        edge = new View(getApplicationContext());
-        WindowManager.LayoutParams edgeParams = new WindowManager.LayoutParams(
-                ScreenUtils.width / 20,
-                ScreenUtils.height,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        windowManager.addView(edge, edgeParams);
-
-        mcvCloseOverlay = topView.findViewById(R.id.mcvCloseOverlay);
+        FrameLayout flCloseOverlay = topView.findViewById(R.id.flCloseOverlay);
         mediaPlayerView = topView.findViewById(R.id.mpvMain);
         adDrawer = topView.findViewById(R.id.adDrawer);
         mediaPlayerView.bindToTrack();
-        mcvCloseOverlay.setVisibility(View.VISIBLE);
+        flCloseOverlay.setVisibility(View.VISIBLE);
 
-        mcvCloseOverlay.setOnClickListener(v -> {
+        flCloseOverlay.setOnClickListener(v -> {
 
             initAnimation(true);
 
@@ -223,7 +209,7 @@ public class Overlay extends Service implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 break;
-            case R.id.mcvStart:
+            case R.id.flStart:
                 int height = ScreenUtils.height;
 
                 break;
